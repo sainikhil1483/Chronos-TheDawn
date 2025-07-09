@@ -1,57 +1,60 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: ''
+    username: "",
+    email: "",
+    password: "",
   });
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage('');
+    setMessage("");
 
     try {
-      const endpoint = isLogin ? '/api/auth/login' : '/api/auth/signup';
-      const response = await fetch(`http://localhost:5000${endpoint}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      const endpoint = isLogin ? "/api/auth/login" : "/api/auth/signup";
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}${endpoint}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       const data = await response.json();
 
       if (response.ok) {
         if (isLogin) {
-          localStorage.setItem('token', 'logged-in'); // Simple token for demo
-          localStorage.setItem('username', formData.username);
-          setMessage('✅ Login successful! Redirecting to game...');
-          setTimeout(() => navigate('/game'), 1500);
+          localStorage.setItem("token", "logged-in"); // Simple token for demo
+          localStorage.setItem("username", formData.username);
+          setMessage("✅ Login successful! Redirecting to game...");
+          setTimeout(() => navigate("/game"), 1500);
         } else {
-          setMessage('✅ Account created successfully! You can now login.');
+          setMessage("✅ Account created successfully! You can now login.");
           setIsLogin(true);
-          setFormData({ username: '', email: '', password: '' });
+          setFormData({ username: "", email: "", password: "" });
         }
       } else {
         setMessage(`❌ ${data.message}`);
       }
     } catch (error) {
-      setMessage('❌ Connection error. Please try again.');
+      setMessage("❌ Connection error. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -61,12 +64,13 @@ const Login = () => {
     container: {
       background: "linear-gradient(to bottom, #101632 80%, #142355 100%)",
       color: "#f3f3f3",
-      fontFamily: "'Share Tech Mono', 'Fira Mono', 'Consolas', 'Monaco', monospace",
+      fontFamily:
+        "'Share Tech Mono', 'Fira Mono', 'Consolas', 'Monaco', monospace",
       minHeight: "100vh",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      padding: "20px"
+      padding: "20px",
     },
     formContainer: {
       background: "#081629",
@@ -75,7 +79,7 @@ const Login = () => {
       border: "1.5px solid #13ff53",
       padding: "40px",
       width: "100%",
-      maxWidth: "480px"
+      maxWidth: "480px",
     },
     title: {
       color: "#ff6600",
@@ -84,29 +88,29 @@ const Login = () => {
       marginBottom: "30px",
       textShadow: "0 0 16px #ff7f5080, 0 0 30px #fcf67b40",
       letterSpacing: "0.09em",
-      whiteSpace: "nowrap"
+      whiteSpace: "nowrap",
     },
     subtitle: {
       color: "#39ff14",
       fontSize: "1.1rem",
       textAlign: "center",
       marginBottom: "30px",
-      textShadow: "0 0 6px #39ff1455"
+      textShadow: "0 0 6px #39ff1455",
     },
     form: {
       display: "flex",
       flexDirection: "column",
-      gap: "20px"
+      gap: "20px",
     },
     inputGroup: {
       display: "flex",
       flexDirection: "column",
-      gap: "8px"
+      gap: "8px",
     },
     label: {
       color: "#ffcc00",
       fontSize: "1rem",
-      fontWeight: "bold"
+      fontWeight: "bold",
     },
     input: {
       background: "#0a1a2e",
@@ -117,11 +121,11 @@ const Login = () => {
       fontSize: "1rem",
       fontFamily: "inherit",
       outline: "none",
-      transition: "border-color 0.3s, box-shadow 0.3s"
+      transition: "border-color 0.3s, box-shadow 0.3s",
     },
     inputFocus: {
       borderColor: "#ff6600",
-      boxShadow: "0 0 10px #ff660080"
+      boxShadow: "0 0 10px #ff660080",
     },
     button: {
       background: "linear-gradient(90deg, #f97063 20%, #d37752 80%)",
@@ -135,16 +139,16 @@ const Login = () => {
       cursor: "pointer",
       outline: "none",
       transition: "all 0.3s",
-      marginTop: "10px"
+      marginTop: "10px",
     },
     buttonHover: {
       background: "linear-gradient(90deg, #44c2f4 30%, #10f792 90%)",
       boxShadow: "0 0 22px #7de26b, 0 0 8px #7bece3a0",
-      transform: "translateY(-2px)"
+      transform: "translateY(-2px)",
     },
     buttonDisabled: {
       opacity: 0.6,
-      cursor: "not-allowed"
+      cursor: "not-allowed",
     },
     toggleButton: {
       background: "transparent",
@@ -157,24 +161,24 @@ const Login = () => {
       cursor: "pointer",
       outline: "none",
       transition: "all 0.3s",
-      marginTop: "10px"
+      marginTop: "10px",
     },
     message: {
       textAlign: "center",
       padding: "10px",
       borderRadius: "6px",
       marginTop: "15px",
-      fontSize: "0.9rem"
+      fontSize: "0.9rem",
     },
     messageSuccess: {
       background: "#1a4d1a",
       border: "1px solid #39ff14",
-      color: "#39ff14"
+      color: "#39ff14",
     },
     messageError: {
       background: "#4d1a1a",
       border: "1px solid #ff4444",
-      color: "#ff4444"
+      color: "#ff4444",
     },
     backButton: {
       background: "transparent",
@@ -187,23 +191,20 @@ const Login = () => {
       cursor: "pointer",
       outline: "none",
       transition: "all 0.3s",
-      marginBottom: "20px"
-    }
+      marginBottom: "20px",
+    },
   };
 
   return (
     <div style={styles.container}>
       <div style={styles.formContainer}>
-        <button 
-          style={styles.backButton}
-          onClick={() => navigate('/')}
-        >
+        <button style={styles.backButton} onClick={() => navigate("/")}>
           ← Back to Homepage
         </button>
-        
+
         <h1 style={styles.title}>Chronos: The Dawn</h1>
         <p style={styles.subtitle}>
-          {isLogin ? 'Login to continue your adventure' : 'Create your account'}
+          {isLogin ? "Login to continue your adventure" : "Create your account"}
         </p>
 
         <form style={styles.form} onSubmit={handleSubmit}>
@@ -252,11 +253,11 @@ const Login = () => {
             type="submit"
             style={{
               ...styles.button,
-              ...(loading && styles.buttonDisabled)
+              ...(loading && styles.buttonDisabled),
             }}
             disabled={loading}
           >
-            {loading ? 'Processing...' : (isLogin ? 'Login' : 'Sign Up')}
+            {loading ? "Processing..." : isLogin ? "Login" : "Sign Up"}
           </button>
         </form>
 
@@ -264,18 +265,24 @@ const Login = () => {
           style={styles.toggleButton}
           onClick={() => {
             setIsLogin(!isLogin);
-            setFormData({ username: '', email: '', password: '' });
-            setMessage('');
+            setFormData({ username: "", email: "", password: "" });
+            setMessage("");
           }}
         >
-          {isLogin ? 'Need an account? Sign up' : 'Already have an account? Login'}
+          {isLogin
+            ? "Need an account? Sign up"
+            : "Already have an account? Login"}
         </button>
 
         {message && (
-          <div style={{
-            ...styles.message,
-            ...(message.includes('✅') ? styles.messageSuccess : styles.messageError)
-          }}>
+          <div
+            style={{
+              ...styles.message,
+              ...(message.includes("✅")
+                ? styles.messageSuccess
+                : styles.messageError),
+            }}
+          >
             {message}
           </div>
         )}
@@ -284,4 +291,4 @@ const Login = () => {
   );
 };
 
-export default Login; 
+export default Login;
